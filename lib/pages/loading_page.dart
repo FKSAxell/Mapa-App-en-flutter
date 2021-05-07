@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mapa_app/helpers/helpers.dart';
+import 'package:mapa_app/pages/acceso_gps_page.dart';
 import 'package:mapa_app/pages/mapa_page.dart';
 
 class LoadingPage extends StatelessWidget {
@@ -22,8 +23,10 @@ class LoadingPage extends StatelessWidget {
   Future checkGpsLocation(BuildContext context) async {
     //TODO: VERIFICAR SI TENGO PERMISOS
     //TODO: VERIFICAR SI ESTÁ EL GPS ACTIVO
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(Duration(milliseconds: 100));
 
-    Navigator.pushReplacement(context, navegarMapaFadeIn(context, MapaPage()));
+    Navigator.pushReplacement(
+        context, navegarMapaFadeIn(context, AccesoGpsPage()));
+    // Navigator.pushReplacement(context, navegarMapaFadeIn(context, MapaPage()));
   }
 }
