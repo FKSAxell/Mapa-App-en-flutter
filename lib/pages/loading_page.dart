@@ -24,9 +24,9 @@ class LoadingPage extends StatelessWidget {
     //TODO: VERIFICAR SI TENGO PERMISOS
     //TODO: VERIFICAR SI ESTÁ EL GPS ACTIVO
     await Future.delayed(Duration(milliseconds: 100));
-
-    Navigator.pushReplacement(
-        context, navegarMapaFadeIn(context, AccesoGpsPage()));
+    print('Loading Page... ');
+    // Navigator.pushReplacement(
+    //     context, navegarMapaFadeIn(context, AccesoGpsPage()));
     // Navigator.pushReplacement(context, navegarMapaFadeIn(context, MapaPage()));
   }
 }
