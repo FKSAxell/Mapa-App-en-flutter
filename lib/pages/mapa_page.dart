@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapa_app/bloc/mapa/mapa_bloc.dart';
 
@@ -27,34 +26,42 @@ class _MapaPageState extends State<MapaPage> {
 
   @override
   Widget build(BuildContext context) {
-    final miUbicacionBloc = context.watch<MiUbicacionBloc>().state;
-
     return Scaffold(
-      body: crearMapa(miUbicacionBloc),
+      body: BlocBuilder<MiUbicacionBloc, MiUbicacionState>(
+        builder: (_, state) => crearMapa(state),
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           BtnUbicacion(),
+          BtnSeguirUbicacion(),
+          BtnMiRuta(),
         ],
       ),
     );
   }
 
   Widget crearMapa(MiUbicacionState state) {
-    if (!state.existeUbicacion) {
-      return Center(child: Text('Ubicando...'));
-    }
-    final mapaBloc = context.watch<MapaBloc>();
-    final CameraPosition cameraPosition = CameraPosition(
-      target: state.ubicacion,
-      zoom: 15,
-    );
+    if (!state.existeUbicacion) return Center(child: Text('Ubicando...'));
+
+    final mapaBloc = BlocProvider.of<MapaBloc>(context);
+
+    mapaBloc.add(OnNuevaUbicacion(state.ubicacion));
+
+    final cameraPosition =
+        new CameraPosition(target: state.ubicacion, zoom: 15);
+
     return GoogleMap(
       initialCameraPosition: cameraPosition,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated: mapaBloc.initMapa,
+      polylines: mapaBloc.state.polylines.values.toSet(),
+      onCameraMove: (cameraPosition) {
+        // cameraPosition.target = LatLng central del mapa
+        mapaBloc.add(OnMovioMapa(cameraPosition.target));
+      },
     );
   }
 }
