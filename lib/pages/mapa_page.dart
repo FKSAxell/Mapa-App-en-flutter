@@ -33,10 +33,12 @@ class _MapaPageState extends State<MapaPage> {
           BlocBuilder<MiUbicacionBloc, MiUbicacionState>(
             builder: (_, state) => crearMapa(state),
           ),
-          Positioned(
-            top: 15,
-            child: SearchBar(),
-          ),
+          //TODO: NO OLVIAR LA BARRA
+          // Positioned(
+          //   top: 15,
+          //   child: SearchBar(),
+          // ),
+          MarcadorManual(),
         ],
       ),
       floatingActionButton: Column(
